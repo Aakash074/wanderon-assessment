@@ -13,9 +13,18 @@ class TokenService {
    * @returns {Object} Cookie configuration object
    */
   getCookieOptions() {
+    // Dynamically set SameSite/Secure based on frontend protocol
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    const isHttpsClient = clientUrl.startsWith('https://');
+    // For cross-site cookies over HTTPS we must use SameSite=None; Secure
+    const sameSite = isHttpsClient ? 'none' : 'lax';
+    const secure = isHttpsClient || process.env.NODE_ENV === 'production';
+
     // Session cookie: omit maxAge so cookie expires on browser close
     return {
-      ...COOKIE.OPTIONS
+      ...COOKIE.OPTIONS,
+      sameSite,
+      secure,
     };
   }
 
@@ -63,7 +72,8 @@ class TokenService {
    * @param {Object} res - Express response object
    */
   clearAuthCookie(res) {
-    res.clearCookie(COOKIE.NAME, COOKIE.OPTIONS);
+    // Must match options used when setting the cookie to clear properly
+    res.clearCookie(COOKIE.NAME, this.getCookieOptions());
   }
 
   /**
