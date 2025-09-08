@@ -87,12 +87,12 @@ frontend/
 3. **Create environment file**
    ```bash
    # Copy the development example file
-   cp env.development.example .env
+   cp env.example .env
    
    # Or create .env manually with the following variables:
    NODE_ENV=development
    PORT=5001
-   MONGODB_URI=mongodb+srv://admin:kitkat123@cluster0.vyohmg4.mongodb.net/secure-auth?retryWrites=true&w=majority&appName=Cluster0
+   MONGODB_URI=mongodb+srv://...
    JWT_SECRET=your-super-secure-jwt-secret-key-change-in-production
    JWT_EXPIRE=7d
    COOKIE_EXPIRE=7
@@ -125,7 +125,7 @@ frontend/
 3. **Create environment file (optional)**
    ```bash
    # Copy the development example file
-   cp env.development.example .env
+   cp env.example .env
    
    # The default configuration should work for local development
    # REACT_APP_API_URL=http://localhost:5001/api
@@ -372,32 +372,23 @@ This system is designed for deployment on modern cloud platforms:
 - **Backend**: Render (Cloud hosting with auto-deploy)
 - **Database**: MongoDB Atlas (Cloud database)
 
-### **Quick Deploy**
-1. **Backend**: Deploy to Render with one-click GitHub integration
-2. **Frontend**: Deploy to Netlify with automatic build optimization
-3. **Database**: Already configured with MongoDB Atlas
-
-📖 **See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for detailed deployment instructions.**
-
 ## ⚙️ Environment Configuration
 
 The system includes example environment files for different deployment scenarios:
 
 ### **Backend Environment Files**
-- `env.development.example` - Local development configuration
-- `env.production.example` - Production deployment configuration
+- `env.example` - Development configuration
 
 ### **Frontend Environment Files**  
-- `env.development.example` - Local development configuration
-- `env.production.example` - Production deployment configuration
+- `env.example` - Development configuration
 
 ### **Setup Instructions**
 ```bash
 # For local development
-cp env.development.example .env
+cp env.example .env
 
 # For production deployment
-cp env.production.example .env
+cp env.example .env
 # Then update with your actual values
 ```
 
@@ -405,12 +396,11 @@ cp env.production.example .env
 
 - **[API Documentation](./API_DOCUMENTATION.md)** - Complete API reference
 - **[Architecture Guide](./ARCHITECTURE.md)** - System architecture and design patterns
-- **[Deployment Guide](./DEPLOYMENT_GUIDE.md)** - Production deployment instructions
 - **[Validation System](./VALIDATION_SYSTEM.md)** - Input validation documentation
 
 ## 📞 Support
 
-For support, email support@wanderon.com or create an issue in this repository.
+For support, create an issue in this repository.
 
 ---
 
