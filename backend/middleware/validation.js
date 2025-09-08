@@ -62,8 +62,8 @@ const validateRegistration = [
   body('password')
     .isLength({ min: 8, max: 128 })
     .withMessage('Password must be between 8 and 128 characters')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
-    .withMessage('Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character'),
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,\/+\-])[A-Za-z\d@$!%*?&.,\/+\-]+$/)
+    .withMessage('Password must include lowercase, uppercase, number, and one of @$!%*?&.,/+-'),
   
   body('confirmPassword')
     .custom((value, { req }) => {
@@ -83,7 +83,15 @@ const validateLogin = [
     .notEmpty()
     .withMessage('Email or username is required')
     .isLength({ min: 3, max: 255 })
-    .withMessage('Identifier must be between 3 and 255 characters'),
+    .withMessage('Identifier must be between 3 and 255 characters')
+    .custom(value => {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const usernamePattern = /^[a-zA-Z0-9_]{3,30}$/;
+      if (!(emailPattern.test(value) || usernamePattern.test(value))) {
+        throw new Error('Enter a valid email or username');
+      }
+      return true;
+    }),
   
   body('password')
     .notEmpty()
@@ -103,8 +111,8 @@ const validatePasswordChange = [
   body('newPassword')
     .isLength({ min: 8, max: 128 })
     .withMessage('New password must be between 8 and 128 characters')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
-    .withMessage('New password must contain at least one lowercase letter, one uppercase letter, one number, and one special character'),
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,\/+\-])[A-Za-z\d@$!%*?&.,\/+\-]+$/)
+    .withMessage('New password must include lowercase, uppercase, number, and one of @$!%*?&.,/+-'),
   
   body('confirmNewPassword')
     .custom((value, { req }) => {

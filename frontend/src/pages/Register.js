@@ -171,6 +171,7 @@ const RegisterNew = () => {
               showPassword={showPassword}
               onPasswordToggle={() => setShowPassword(!showPassword)}
               required
+              allowedPattern={/[A-Za-z0-9@$!%*?&.,/+-_]/}
               onKeyDown={(e) => handleKeyDown(e, 'password')}
               {...getFieldProps('password')}
             />
@@ -191,6 +192,7 @@ const RegisterNew = () => {
               showPassword={showConfirmPassword}
               onPasswordToggle={() => setShowConfirmPassword(!showConfirmPassword)}
               required
+              allowedPattern={/[A-Za-z0-9@$!%*?&.,/+-_]/}
               onKeyDown={(e) => handleKeyDown(e, 'confirmPassword')}
               {...getFieldProps('confirmPassword')}
             />

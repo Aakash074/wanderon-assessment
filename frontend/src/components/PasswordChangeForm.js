@@ -55,6 +55,7 @@ const PasswordChangeForm = () => {
           showPassword={showCurrentPassword}
           onPasswordToggle={() => setShowCurrentPassword(!showCurrentPassword)}
           required
+          allowedPattern={/[A-Za-z0-9@$!%*?&.,/+-_]/}
           {...getFieldProps('currentPassword')}
         />
 
@@ -68,6 +69,7 @@ const PasswordChangeForm = () => {
           showPassword={showNewPassword}
           onPasswordToggle={() => setShowNewPassword(!showNewPassword)}
           required
+          allowedPattern={/[A-Za-z0-9@$!%*?&.,/+-_]/}
           {...getFieldProps('newPassword')}
         />
 
@@ -86,6 +88,7 @@ const PasswordChangeForm = () => {
           showPassword={showConfirmPassword}
           onPasswordToggle={() => setShowConfirmPassword(!showConfirmPassword)}
           required
+          allowedPattern={/[A-Za-z0-9@$!%*?&.,/+-_]/}
           {...getFieldProps('confirmNewPassword')}
         />
 

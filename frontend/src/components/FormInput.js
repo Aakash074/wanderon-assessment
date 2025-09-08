@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 
-const FormInput = forwardRef(({
+const FormInput = forwardRef(({ 
   label,
   name,
   type = 'text',
@@ -15,6 +15,7 @@ const FormInput = forwardRef(({
   onChange,
   onBlur,
   onKeyDown,
+  allowedPattern,
   error,
   hasError,
   disabled = false,
@@ -23,6 +24,29 @@ const FormInput = forwardRef(({
   ...props
 }, ref) => {
   const inputType = showPasswordToggle ? (showPassword ? 'text' : 'password') : type;
+
+  const handleBeforeInput = (e) => {
+    if (!allowedPattern) return;
+    // e.data can be null for non-insert events; only block explicit text insertions
+    if (typeof e.data === 'string' && !allowedPattern.test(e.data)) {
+      e.preventDefault();
+    }
+  };
+
+  const handlePaste = (e) => {
+    if (!allowedPattern) return;
+    const pasted = (e.clipboardData || window.clipboardData).getData('text');
+    if (!pasted) return;
+    const sanitized = Array.from(pasted).filter(ch => allowedPattern.test(ch)).join('');
+    if (sanitized !== pasted) {
+      e.preventDefault();
+      const target = e.target;
+      const start = target.selectionStart ?? value.length;
+      const end = target.selectionEnd ?? value.length;
+      const newValue = `${value.slice(0, start)}${sanitized}${value.slice(end)}`;
+      onChange && onChange({ target: { value: newValue } });
+    }
+  };
 
   return (
     <div className={`space-y-1 ${className}`}>
@@ -49,6 +73,8 @@ const FormInput = forwardRef(({
           onChange={onChange}
           onBlur={onBlur}
           onKeyDown={onKeyDown}
+          onBeforeInput={handleBeforeInput}
+          onPaste={handlePaste}
           placeholder={placeholder}
           disabled={disabled}
           className={`

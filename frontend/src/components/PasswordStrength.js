@@ -18,7 +18,7 @@ const PasswordStrength = ({ password, className = '' }) => {
     { test: /[a-z]/.test(password), text: 'One lowercase letter' },
     { test: /[A-Z]/.test(password), text: 'One uppercase letter' },
     { test: /[0-9]/.test(password), text: 'One number' },
-    { test: /[^A-Za-z0-9]/.test(password), text: 'One special character' },
+    { test: /[^A-Za-z0-9]/.test(password), text: 'One special character @$!%*?&.,+-_' },
   ];
 
   return (

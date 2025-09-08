@@ -37,8 +37,8 @@ const validationRules = {
     minLength: { value: 8, message: 'Password must be at least 8 characters' },
     maxLength: { value: 128, message: 'Password must be less than 128 characters' },
     pattern: { 
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
-      message: 'Password must contain uppercase, lowercase, number, and special character' 
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,/+-_])[A-Za-z\d@$!%*?&.,/+-_]+$/, 
+      message: 'Password must include uppercase, lowercase, number, and one of @$!%*?&.,/+-_' 
     }
   },
   confirmPassword: {
@@ -53,7 +53,16 @@ const validationRules = {
   identifier: {
     required: 'Email or username is required',
     minLength: { value: 3, message: 'Must be at least 3 characters' },
-    maxLength: { value: 255, message: 'Must be less than 255 characters' }
+    maxLength: { value: 255, message: 'Must be less than 255 characters' },
+    custom: (value) => {
+      const v = (value || '').trim();
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const usernamePattern = /^[a-zA-Z0-9_]{3,30}$/;
+      if (!(emailPattern.test(v) || usernamePattern.test(v))) {
+        return 'Enter a valid email or username';
+      }
+      return null;
+    }
   },
   currentPassword: {
     required: 'Current password is required'
@@ -63,8 +72,8 @@ const validationRules = {
     minLength: { value: 8, message: 'New password must be at least 8 characters' },
     maxLength: { value: 128, message: 'New password must be less than 128 characters' },
     pattern: { 
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/, 
-      message: 'New password must contain uppercase, lowercase, number, and special character' 
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,/+-_])[A-Za-z\d@$!%*?&.,/+-_]+$/, 
+      message: 'New password must include uppercase, lowercase, number, and one of @$!%*?&.,/+-_' 
     }
   },
   confirmNewPassword: {
