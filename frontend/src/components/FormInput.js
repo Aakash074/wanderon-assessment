@@ -14,6 +14,7 @@ const FormInput = forwardRef(({
   value,
   onChange,
   onBlur,
+  onKeyDown,
   error,
   hasError,
   disabled = false,
@@ -47,6 +48,7 @@ const FormInput = forwardRef(({
           value={value}
           onChange={onChange}
           onBlur={onBlur}
+          onKeyDown={onKeyDown}
           placeholder={placeholder}
           disabled={disabled}
           className={`

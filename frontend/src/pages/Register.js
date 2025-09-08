@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useFormValidation } from '../hooks/useFormValidation';
+import useAutoFocus from '../hooks/useAutoFocus';
 import FormInput from '../components/FormInput';
 import PasswordStrength from '../components/PasswordStrength';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -20,6 +21,10 @@ const RegisterNew = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { register: registerUser, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+
+  // Auto-focus setup
+  const fieldNames = ['firstName', 'lastName', 'username', 'email', 'password', 'confirmPassword'];
+  const { registerRef, handleKeyDown } = useAutoFocus(fieldNames);
 
   const {
     formData,
@@ -110,45 +115,54 @@ const RegisterNew = () => {
             {/* Name Fields */}
             <div className="grid grid-cols-2 gap-4">
               <FormInput
+                ref={registerRef('firstName')}
                 label="First Name"
                 name="firstName"
                 placeholder="John"
                 required
+                onKeyDown={(e) => handleKeyDown(e, 'firstName')}
                 {...getFieldProps('firstName')}
               />
 
               <FormInput
+                ref={registerRef('lastName')}
                 label="Last Name"
                 name="lastName"
                 placeholder="Doe"
                 required
+                onKeyDown={(e) => handleKeyDown(e, 'lastName')}
                 {...getFieldProps('lastName')}
               />
             </div>
 
             {/* Username Field */}
             <FormInput
+              ref={registerRef('username')}
               label="Username"
               name="username"
               placeholder="johndoe"
               icon={User}
               required
+              onKeyDown={(e) => handleKeyDown(e, 'username')}
               {...getFieldProps('username')}
             />
 
             {/* Email Field */}
             <FormInput
+              ref={registerRef('email')}
               label="Email Address"
               name="email"
               type="email"
               placeholder="john@example.com"
               icon={Mail}
               required
+              onKeyDown={(e) => handleKeyDown(e, 'email')}
               {...getFieldProps('email')}
             />
 
             {/* Password Field */}
             <FormInput
+              ref={registerRef('password')}
               label="Password"
               name="password"
               placeholder="Create a strong password"
@@ -157,6 +171,7 @@ const RegisterNew = () => {
               showPassword={showPassword}
               onPasswordToggle={() => setShowPassword(!showPassword)}
               required
+              onKeyDown={(e) => handleKeyDown(e, 'password')}
               {...getFieldProps('password')}
             />
 
@@ -167,6 +182,7 @@ const RegisterNew = () => {
 
             {/* Confirm Password Field */}
             <FormInput
+              ref={registerRef('confirmPassword')}
               label="Confirm Password"
               name="confirmPassword"
               placeholder="Confirm your password"
@@ -175,6 +191,7 @@ const RegisterNew = () => {
               showPassword={showConfirmPassword}
               onPasswordToggle={() => setShowConfirmPassword(!showConfirmPassword)}
               required
+              onKeyDown={(e) => handleKeyDown(e, 'confirmPassword')}
               {...getFieldProps('confirmPassword')}
             />
 

@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useFormValidation } from '../hooks/useFormValidation';
+import useAutoFocus from '../hooks/useAutoFocus';
 import FormInput from '../components/FormInput';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { 
@@ -20,6 +21,10 @@ const LoginNew = () => {
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/dashboard';
+
+  // Auto-focus setup
+  const fieldNames = ['identifier', 'password'];
+  const { registerRef, handleKeyDown } = useAutoFocus(fieldNames);
 
   const {
     errors,
@@ -100,17 +105,20 @@ const LoginNew = () => {
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             {/* Email/Username Field */}
             <FormInput
+              ref={registerRef('identifier')}
               label="Email or Username"
               name="identifier"
               type="text"
               placeholder="Enter your email or username"
               icon={Mail}
               required
+              onKeyDown={(e) => handleKeyDown(e, 'identifier')}
               {...getFieldProps('identifier')}
             />
 
             {/* Password Field */}
             <FormInput
+              ref={registerRef('password')}
               label="Password"
               name="password"
               placeholder="Enter your password"
@@ -119,6 +127,7 @@ const LoginNew = () => {
               showPassword={showPassword}
               onPasswordToggle={() => setShowPassword(!showPassword)}
               required
+              onKeyDown={(e) => handleKeyDown(e, 'password')}
               {...getFieldProps('password')}
             />
 
