@@ -127,7 +127,7 @@ const LoginNew = () => {
               showPassword={showPassword}
               onPasswordToggle={() => setShowPassword(!showPassword)}
               required
-              allowedPattern={/[A-Za-z0-9@$!%*?&.,/+-_]/}
+              allowedPattern={/[A-Za-z0-9@$!%*?&.,\/+_\-]/}
               onKeyDown={(e) => handleKeyDown(e, 'password')}
               {...getFieldProps('password')}
             />
