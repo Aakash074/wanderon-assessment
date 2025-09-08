@@ -37,7 +37,7 @@ const validationRules = {
     minLength: { value: 8, message: 'Password must be at least 8 characters' },
     maxLength: { value: 128, message: 'Password must be less than 128 characters' },
     pattern: { 
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,/+_\-])[A-Za-z\d@$!%*?&.,/+_\-]+$/, 
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,/+_-])[A-Za-z\d@$!%*?&.,/+_-]+$/, 
       message: 'Password must include uppercase, lowercase, number, and one of @$!%*?&.,/+-_' 
     }
   },
@@ -72,7 +72,7 @@ const validationRules = {
     minLength: { value: 8, message: 'New password must be at least 8 characters' },
     maxLength: { value: 128, message: 'New password must be less than 128 characters' },
     pattern: { 
-      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,/+_\-])[A-Za-z\d@$!%*?&.,/+_\-]+$/, 
+      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.,/+_-])[A-Za-z\d@$!%*?&.,/+_-]+$/, 
       message: 'New password must include uppercase, lowercase, number, and one of @$!%*?&.,/+-_' 
     }
   },
