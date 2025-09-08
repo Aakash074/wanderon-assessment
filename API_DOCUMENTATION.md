@@ -12,13 +12,15 @@ The WanderOn Authentication API provides secure user authentication and manageme
 
 The API uses JWT (JSON Web Tokens) for authentication, stored in HTTP-only cookies for security. Some endpoints require authentication while others are public.
 
-### Authentication Header
-```
-Authorization: Bearer <jwt_token>
-```
+Cookie behavior:
+- In production (HTTPS or when CLIENT_URL is https), cookies are set with `SameSite=None; Secure` for cross-site usage.
+- In local development over HTTP, cookies are set with `SameSite=Lax` and without `Secure`.
 
-### Cookie Authentication
-The API automatically handles authentication via HTTP-only cookies set during login/registration.
+### Cookie Authentication (preferred)
+The API automatically handles authentication via HTTP-only cookies set during login/registration. Clients should send requests with `withCredentials: true`.
+
+### Authorization Header (optional)
+Some tools may use a Bearer token header, but it is not required when using cookies.
 
 ---
 
@@ -484,7 +486,6 @@ Returns paginated list of all users (admin only).
 ### Password Security
 - Bcrypt hashing with 12 salt rounds
 - Strong password requirements (8+ chars, mixed case, numbers, special chars)
-- Password history to prevent reuse
 
 ### JWT Security
 - HTTP-only cookies prevent XSS attacks
@@ -540,7 +541,7 @@ const loginUser = async (credentials) => {
   }
 };
 
-// Get current user
+// Get current user (cookie-based)
 const getCurrentUser = async () => {
   try {
     const response = await api.get('/auth/me');
@@ -551,7 +552,7 @@ const getCurrentUser = async () => {
 };
 ```
 
-### cURL Examples
+### cURL Examples (cookie-based)
 
 ```bash
 # Register user (Development)

@@ -112,7 +112,6 @@ The WanderOn Authentication System is a production-ready, secure user authentica
 │  └── User Model                                                │
 │      ├── User Schema                                           │
 │      ├── Password Hashing                                      │
-│      ├── JWT Generation                                        │
 │      ├── Login Attempt Tracking                                │
 │      └── Account Lockout Logic                                 │
 └─────────────────────────────────────────────────────────────────┘
@@ -125,7 +124,7 @@ The WanderOn Authentication System is a production-ready, secure user authentica
 │  ├── User Collection                                           │
 │  │   ├── User Documents                                        │
 │  │   ├── Indexes (email, username)                            │
-│  │   └── TTL Indexes (refresh tokens)                         │
+│  │   └── Indexes as required for users                        │
 │  ├── Connection Management                                     │
 │  │   ├── Connection Pooling                                    │
 │  │   ├── Retry Logic                                           │
@@ -195,14 +194,15 @@ Configuration objects are created through factory functions for consistency.
 
 #### 1. Transport Security
 - HTTPS enforcement in production
-- Secure cookie flags
-- SameSite cookie policy
+- Cookie policy is dynamic:
+  - Production / HTTPS client: `SameSite=None; Secure`
+  - Local HTTP client: `SameSite=Lax` (no `Secure`)
 
 #### 2. Authentication Security
 - JWT tokens with expiration
 - HTTP-only cookies (XSS protection)
-- Secure cookie flags (HTTPS only)
-- Token refresh mechanism
+- Dynamic Secure/SameSite as above
+- Token refresh endpoint (no refresh token store)
 
 #### 3. Authorization Security
 - Role-based access control (RBAC)

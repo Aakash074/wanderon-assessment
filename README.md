@@ -176,13 +176,13 @@ Content-Type: application/json
 #### Logout User
 ```http
 POST /api/auth/logout
-Authorization: Bearer <token>
+# Cookie-based; Authorization header not required
 ```
 
 #### Get Current User
 ```http
 GET /api/auth/me
-Authorization: Bearer <token>
+# Cookie-based; Authorization header not required
 ```
 
 #### Check Authentication Status
@@ -237,8 +237,9 @@ Content-Type: application/json
 
 ### JWT Security
 - **HTTP-only cookies** prevent XSS attacks
-- **Secure flag** for HTTPS environments
-- **SameSite policy** for CSRF protection
+- **Dynamic cookie policy**:
+  - Production / HTTPS client: `SameSite=None; Secure`
+  - Local HTTP client: `SameSite=Lax` (no `Secure`)
 - **Token expiration** with configurable duration
 - **Token refresh** mechanism
 
