@@ -24,30 +24,16 @@ module.exports = {
     }
   },
 
-  // Security Configuration
+  // Security Configuration (only values actively used by code)
   SECURITY: {
     BCRYPT_ROUNDS: 12,
     MAX_LOGIN_ATTEMPTS: parseInt(process.env.MAX_LOGIN_ATTEMPTS) || 5,
-    LOCKOUT_TIME_MINUTES: parseInt(process.env.LOCKOUT_TIME) || 15,
-    RATE_LIMIT: {
-      GENERAL: {
-        windowMs: 15 * 60 * 1000, // 15 minutes
-        max: 100
-      },
-      AUTH: {
-        windowMs: 15 * 60 * 1000, // 15 minutes
-        max: 5
-      }
-    }
+    LOCKOUT_TIME_MINUTES: parseInt(process.env.LOCKOUT_TIME) || 15
   },
 
   // Database Configuration
   DATABASE: {
-    MONGODB_URI: process.env.MONGODB_URI,
-    CONNECTION_OPTIONS: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    }
+    MONGODB_URI: process.env.MONGODB_URI
   },
 
   // Application Configuration
@@ -57,59 +43,16 @@ module.exports = {
     CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:3000'
   },
 
-  // Response Messages
-  MESSAGES: {
-    SUCCESS: {
-      REGISTER: 'User registered successfully',
-      LOGIN: 'Login successful',
-      LOGOUT: 'Logged out successfully',
-      PROFILE_UPDATE: 'Profile updated successfully',
-      PASSWORD_CHANGE: 'Password changed successfully',
-      ACCOUNT_DELETE: 'Account deactivated successfully',
-      TOKEN_REFRESH: 'Token refreshed successfully'
-    },
-    ERROR: {
-      UNAUTHORIZED: 'Access denied. No token provided.',
-      INVALID_TOKEN: 'Invalid token.',
-      TOKEN_EXPIRED: 'Token expired.',
-      USER_NOT_FOUND: 'User not found',
-      INACTIVE_USER: 'Invalid token. User not found or inactive.',
-      INVALID_CREDENTIALS: 'Invalid credentials',
-      EMAIL_EXISTS: 'Email already exists. Please use another email.',
-      USERNAME_EXISTS: 'Username already exists. Please use another username.',
-      ACCOUNT_LOCKED: 'Account temporarily locked due to too many failed login attempts',
-      CURRENT_PASSWORD_INCORRECT: 'Current password is incorrect',
-      AUTHENTICATION_FAILED: 'Authentication failed.',
-      INSUFFICIENT_PERMISSIONS: 'Insufficient permissions to access this resource.',
-      VALIDATION_ERROR: 'Validation error',
-      SERVER_ERROR: 'Internal server error'
-    }
-  },
+  // Response Messages (not currently used by code) — removed to avoid duplication
 
-  // HTTP Status Codes
-  HTTP_STATUS: {
-    OK: 200,
-    CREATED: 201,
-    BAD_REQUEST: 400,
-    UNAUTHORIZED: 401,
-    FORBIDDEN: 403,
-    NOT_FOUND: 404,
-    TOO_MANY_REQUESTS: 429,
-    INTERNAL_SERVER_ERROR: 500
-  },
-
-  // User Roles
-  ROLES: {
-    USER: 'user',
-    ADMIN: 'admin'
-  },
+  // Removed unused: HTTP_STATUS, ROLES
 
   // Validation Rules
   VALIDATION: {
     PASSWORD: {
       MIN_LENGTH: 8,
       MAX_LENGTH: 128,
-      REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/
+      REGEX: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
     },
     USERNAME: {
       MIN_LENGTH: 3,

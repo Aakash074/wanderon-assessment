@@ -6,6 +6,7 @@
 
 const User = require('../models/User');
 const { AppError } = require('../middleware/errorHandler');
+const tokenService = require('../services/tokenService');
 
 class AuthService {
   /**
@@ -39,8 +40,16 @@ class AuthService {
    * @returns {Promise<Object>} Authenticated user object
    */
   async loginUser(identifier, password) {
-    const user = await User.findByCredentials(identifier, password);
-    return user;
+    try {
+      const user = await User.findByCredentials(identifier, password);
+      return user;
+    } catch (err) {
+      const { AppError } = require('../middleware/errorHandler');
+      // Map generic errors from model to proper 4xx
+      const message = err && err.message ? err.message : 'Invalid credentials';
+      // Use 400 for invalid credentials and lockout messages
+      throw new AppError(message, 400);
+    }
   }
 
   /**
@@ -88,7 +97,7 @@ class AuthService {
    * @returns {string} JWT token
    */
   generateToken(user) {
-    return user.generateAuthToken();
+    return tokenService.generateTokenForUser(user);
   }
 
   /**

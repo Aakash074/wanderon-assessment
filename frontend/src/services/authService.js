@@ -60,24 +60,12 @@ export const authService = {
     }
   },
 
-  // Get current user
-  getCurrentUser: async () => {
-    const response = await API.get('/auth/me');
-    return response.data;
-  },
-
   // Check authentication status
   checkAuth: async () => {
     const response = await API.get('/auth/check');
     return response.data;
   },
 
-  // Refresh token
-  refreshToken: async () => {
-    const response = await API.post('/auth/refresh');
-    // Token is automatically set as httpOnly cookie by backend
-    return response.data;
-  },
 };
 
 export const userService = {
@@ -106,4 +94,3 @@ authService.updateProfile = userService.updateProfile;
 authService.changePassword = userService.changePassword;
 authService.getProfile = userService.getProfile;
 
-export default API;

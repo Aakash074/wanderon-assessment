@@ -46,41 +46,53 @@ const Navbar = () => {
             className="flex items-center space-x-2 text-primary-600 hover:text-primary-700 transition-colors"
           >
             <motion.div
-              whileHover={{ rotate: 180 }}
-              transition={{ duration: 0.3 }}
+              whileHover={{ rotate: 12, scale: 1.05 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 20 }}
             >
               <Compass className="h-8 w-8" />
             </motion.div>
-            <span className="text-xl font-display font-bold">WanderOn</span>
+            <motion.span 
+              className="text-xl font-display font-bold"
+              whileHover={{ y: -1 }}
+              transition={{ duration: 0.15 }}
+            >
+              WanderOn
+            </motion.span>
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link
+            <motion.div whileHover={{ y: -1 }}>
+              <Link
               to="/"
               className={`text-sm font-medium transition-colors hover:text-primary-600 ${
                 isActivePage('/') ? 'text-primary-600' : 'text-slate-700'
               }`}
-            >
-              Home
-            </Link>
+              >
+                Home
+              </Link>
+            </motion.div>
             
             {isAuthenticated ? (
               <>
-                <Link
+                <motion.div whileHover={{ y: -1 }}>
+                  <Link
                   to="/dashboard"
                   className={`text-sm font-medium transition-colors hover:text-primary-600 ${
                     isActivePage('/dashboard') ? 'text-primary-600' : 'text-slate-700'
                   }`}
-                >
-                  Dashboard
-                </Link>
+                  >
+                    Dashboard
+                  </Link>
+                </motion.div>
                 
                 {/* Profile Dropdown */}
                 <div className="relative">
-                  <button
+                  <motion.button
                     onClick={toggleProfileMenu}
                     className="flex items-center space-x-2 text-slate-700 hover:text-primary-600 transition-colors"
+                    whileTap={{ scale: 0.98 }}
                   >
                     <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
                       <User className="h-4 w-4 text-primary-600" />
@@ -88,7 +100,7 @@ const Navbar = () => {
                     <span className="text-sm font-medium">
                       {user?.firstName} {user?.lastName}
                     </span>
-                  </button>
+                  </motion.button>
 
                   <AnimatePresence>
                     {isProfileMenuOpen && (
@@ -121,18 +133,22 @@ const Navbar = () => {
               </>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link
-                  to="/login"
-                  className="text-sm font-medium text-slate-700 hover:text-primary-600 transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="btn-primary text-sm"
-                >
-                  Get Started
-                </Link>
+                <motion.div whileHover={{ y: -1 }}>
+                  <Link
+                    to="/login"
+                    className="text-sm font-medium text-slate-700 hover:text-primary-600 transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                  <Link
+                    to="/register"
+                    className="btn-primary text-sm"
+                  >
+                    Get Started
+                  </Link>
+                </motion.div>
               </div>
             )}
           </div>

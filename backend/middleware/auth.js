@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 const tokenService = require('../services/tokenService');
 const authService = require('../services/authService');
 
@@ -74,39 +72,9 @@ const authorize = (...roles) => {
   };
 };
 
-// Optional authentication middleware (doesn't fail if no token)
-const optionalAuth = async (req, res, next) => {
-  try {
-    let token = req.cookies.authToken;
-    
-    if (!token && req.header('Authorization')) {
-      const authHeader = req.header('Authorization');
-      if (authHeader.startsWith('Bearer ')) {
-        token = authHeader.substring(7);
-      }
-    }
-
-    if (token) {
-      const decoded = jwt.verify(
-        token, 
-        process.env.JWT_SECRET || 'your-super-secure-jwt-secret-key-change-in-production'
-      );
-
-      const user = await User.findById(decoded.userId);
-      if (user && user.isActive) {
-        req.user = user;
-        req.token = token;
-      }
-    }
-  } catch (error) {
-    // Silently fail for optional auth
-  }
-  
-  next();
-};
+// Removed optionalAuth: not used
 
 module.exports = {
   authenticate,
-  authorize,
-  optionalAuth
+  authorize
 };

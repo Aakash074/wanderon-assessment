@@ -1,6 +1,5 @@
 const { body, validationResult } = require('express-validator');
-const { VALIDATION, MESSAGES } = require('../config/constants');
-const { AppError } = require('./errorHandler');
+const { VALIDATION } = require('../config/constants');
 
 // Validation middleware to check for validation errors
 const handleValidationErrors = (req, res, next) => {
@@ -63,7 +62,7 @@ const validateRegistration = [
   body('password')
     .isLength({ min: 8, max: 128 })
     .withMessage('Password must be between 8 and 128 characters')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
     .withMessage('Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character'),
   
   body('confirmPassword')
@@ -104,7 +103,7 @@ const validatePasswordChange = [
   body('newPassword')
     .isLength({ min: 8, max: 128 })
     .withMessage('New password must be between 8 and 128 characters')
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
     .withMessage('New password must contain at least one lowercase letter, one uppercase letter, one number, and one special character'),
   
   body('confirmNewPassword')

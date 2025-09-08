@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useFormValidation } from '../hooks/useFormValidation';
 import FormInput from '../components/FormInput';
@@ -93,6 +93,7 @@ const LoginNew = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          whileHover={{ y: -2 }}
           transition={{ duration: 0.6, delay: 0.1 }}
           className="card p-8"
         >
@@ -122,23 +123,28 @@ const LoginNew = () => {
             />
 
             {/* Form Error */}
-            {errors.root && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-danger-50 border border-danger-200 rounded-lg p-3"
-              >
-                <div className="flex items-center space-x-2">
-                  <Shield className="h-4 w-4 text-danger-600" />
-                  <p className="text-sm text-danger-700">{errors.root}</p>
-                </div>
-              </motion.div>
-            )}
+            <AnimatePresence mode="wait">
+              {errors.root && (
+                <motion.div
+                  key={errors.root}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="bg-danger-50 border border-danger-200 rounded-lg p-3"
+                >
+                  <div className="flex items-center space-x-2">
+                    <Shield className="h-4 w-4 text-danger-600" />
+                    <p className="text-sm text-danger-700">{errors.root}</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Submit Button */}
-            <button
+            <motion.button
               type="submit"
               disabled={isSubmitting}
+              whileTap={{ scale: 0.98 }}
               className="group w-full btn-primary py-3 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
@@ -149,7 +155,7 @@ const LoginNew = () => {
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </>
               )}
-            </button>
+            </motion.button>
           </form>
 
           {/* Footer */}

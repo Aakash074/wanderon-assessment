@@ -5,8 +5,8 @@
  */
 
 const User = require('../models/User');
-const { AppError } = require('../middleware/errorHandler');
 const bcrypt = require('bcryptjs');
+const { AppError } = require('../middleware/errorHandler');
 
 class UserService {
   /**
@@ -76,8 +76,8 @@ class UserService {
       throw new AppError('User not found', 404);
     }
 
-    // Verify current password
-    const isCurrentPasswordValid = await user.comparePassword(currentPassword);
+    // Verify current password without relying on instance methods
+    const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
     if (!isCurrentPasswordValid) {
       throw new AppError('Current password is incorrect', 400);
     }
@@ -163,18 +163,14 @@ class UserService {
    * @param {string} email - User email
    * @returns {Promise<Object|null>} User object or null
    */
-  async findUserByEmail(email) {
-    return await User.findOne({ email: email.toLowerCase(), isActive: true });
-  }
+  // Removed unused method: findUserByEmail
 
   /**
    * Find user by username
    * @param {string} username - Username
    * @returns {Promise<Object|null>} User object or null
    */
-  async findUserByUsername(username) {
-    return await User.findOne({ username, isActive: true });
-  }
+  // Removed unused method: findUserByUsername
 }
 
 module.exports = new UserService();

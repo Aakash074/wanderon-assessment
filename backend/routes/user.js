@@ -1,7 +1,7 @@
 const express = require('express');
 const { authenticate, authorize } = require('../middleware/auth');
 const { validatePasswordChange, validateProfileUpdate } = require('../middleware/validation');
-const { asyncHandler, AppError } = require('../middleware/errorHandler');
+const { asyncHandler } = require('../middleware/errorHandler');
 const userService = require('../services/userService');
 
 const router = express.Router();

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { JWT, SECURITY, VALIDATION, MESSAGES } = require('../config/constants');
+const { VALIDATION, SECURITY } = require('../config/constants');
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -62,21 +61,12 @@ const userSchema = new mongoose.Schema({
   lockUntil: {
     type: Date,
     default: null
-  },
-  refreshTokens: [{
-    token: String,
-    createdAt: {
-      type: Date,
-      default: Date.now,
-      expires: 604800 // 7 days
-    }
-  }]
+  }
 }, {
   timestamps: true,
   toJSON: {
     transform: function(doc, ret) {
       delete ret.password;
-      delete ret.refreshTokens;
       delete ret.loginAttempts;
       delete ret.lockUntil;
       return ret;
@@ -97,8 +87,8 @@ userSchema.pre('save', async function(next) {
   if (!this.isModified('password')) return next();
   
   try {
-    // Hash password with cost of 12
-    const salt = await bcrypt.genSalt(12);
+    // Hash password with configured cost
+    const salt = await bcrypt.genSalt(SECURITY.BCRYPT_ROUNDS);
     this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
@@ -112,22 +102,7 @@ userSchema.methods.comparePassword = async function(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-// Instance method to generate JWT token
-userSchema.methods.generateAuthToken = function() {
-  return jwt.sign(
-    { 
-      userId: this._id,
-      email: this.email,
-      role: this.role 
-    },
-    process.env.JWT_SECRET || 'your-super-secure-jwt-secret-key-change-in-production',
-    { 
-      expiresIn: process.env.JWT_EXPIRE || '7d',
-      issuer: 'wanderon-auth',
-      audience: 'wanderon-users'
-    }
-  );
-};
+// JWT generation is centralized in tokenService. Do not generate tokens from the model.
 
 // Instance method to handle failed login attempts
 userSchema.methods.incLoginAttempts = function() {
@@ -140,8 +115,8 @@ userSchema.methods.incLoginAttempts = function() {
   }
   
   const updates = { $inc: { loginAttempts: 1 } };
-  const maxAttempts = parseInt(process.env.MAX_LOGIN_ATTEMPTS) || 5;
-  const lockTime = parseInt(process.env.LOCKOUT_TIME) || 15; // minutes
+  const maxAttempts = SECURITY.MAX_LOGIN_ATTEMPTS;
+  const lockTime = SECURITY.LOCKOUT_TIME_MINUTES; // minutes
   
   // If we have reached max attempts and it's not locked already, lock it
   if (this.loginAttempts + 1 >= maxAttempts && !this.isLocked) {

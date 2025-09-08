@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
+import HeroIllustration from '../components/HeroIllustration';
 import { 
   Shield, 
   Lock, 
@@ -52,9 +53,14 @@ const Home = () => {
       <section className="relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float"></div>
-          <div className="absolute top-40 right-20 w-72 h-72 bg-accent-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-float" style={{ animationDelay: '4s' }}></div>
+          {/* Top background illustration */}
+          <div className="pointer-events-none absolute -top-4 left-1/2 -translate-x-1/2 w-[1200px] max-w-none opacity-80">
+            <HeroIllustration />
+          </div>
+          {/* Soft floating blobs */}
+          <div className="absolute top-28 left-20 w-72 h-72 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float"></div>
+          <div className="absolute top-40 right-20 w-72 h-72 bg-accent-200 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float" style={{ animationDelay: '4s' }}></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24">
@@ -112,22 +118,28 @@ const Home = () => {
                 </Link>
               ) : (
                 <>
-                  <Link
-                    to="/register"
-                    className="group inline-flex items-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-xl shadow-medium hover:bg-primary-700 hover:shadow-strong transition-all duration-300"
-                  >
-                    Start Your Journey
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  <Link
-                    to="/login"
-                    className="inline-flex items-center px-8 py-4 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold rounded-xl shadow-soft hover:bg-white hover:shadow-medium transition-all duration-300 border border-white/50"
-                  >
-                    Sign In
-                  </Link>
+                  <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      to="/register"
+                      className="group inline-flex items-center px-8 py-4 bg-primary-600 text-white font-semibold rounded-xl shadow-medium hover:bg-primary-700 hover:shadow-strong transition-all duration-300"
+                    >
+                      Start Your Journey
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
+                  </motion.div>
+                  <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
+                    <Link
+                      to="/login"
+                      className="inline-flex items-center px-8 py-4 bg-white/80 backdrop-blur-sm text-slate-700 font-semibold rounded-xl shadow-soft hover:bg-white hover:shadow-medium transition-all duration-300 border border-white/50"
+                    >
+                      Sign In
+                    </Link>
+                  </motion.div>
                 </>
               )}
             </motion.div>
+
+            {/* Illustration moved to top background */}
           </div>
         </div>
       </section>

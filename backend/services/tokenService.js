@@ -5,7 +5,7 @@
  */
 
 const jwt = require('jsonwebtoken');
-const { JWT, COOKIE, HTTP_STATUS } = require('../config/constants');
+const { JWT, COOKIE } = require('../config/constants');
 
 class TokenService {
   /**
@@ -13,9 +13,9 @@ class TokenService {
    * @returns {Object} Cookie configuration object
    */
   getCookieOptions() {
+    // Session cookie: omit maxAge so cookie expires on browser close
     return {
-      ...COOKIE.OPTIONS,
-      maxAge: COOKIE.EXPIRE_DAYS * 24 * 60 * 60 * 1000 // Convert days to milliseconds
+      ...COOKIE.OPTIONS
     };
   }
 
